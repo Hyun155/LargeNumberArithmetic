@@ -1,10 +1,3 @@
-
-package com.mycompany.largenumberarithmetic;
-
-/**
- *
- * @author HP
- */
 public class DivisionArithmetic {
 
     /**

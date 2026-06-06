@@ -1,7 +1,3 @@
-/**
- *
- * @author Hp
- */
 public class BasicArithmetic {
     // Addition function from tail (least sig digit), handle carry
     public static BigNumber add(BigNumber num1, BigNumber num2){

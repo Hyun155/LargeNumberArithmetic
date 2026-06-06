@@ -1,5 +1,3 @@
-import org.w3c.dom.Node;
-
 public class AdvancedArithmetic {
 
     // 1. Multiplication Algorithm

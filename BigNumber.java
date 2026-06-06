@@ -1,13 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.mycompany.largenumberarithmetic;
-
-/**
- *
- * @author HP
- */
 public class BigNumber {
     Node head;
     Node tail;
@@ -33,9 +23,6 @@ public class BigNumber {
             
             //Add this digit as a new node at the tail
             append(digit);
-            
-            // Increment size
-            size++;
         }
     }
         
@@ -58,10 +45,34 @@ public class BigNumber {
                 newNode.prev = tail;   // new node looks back at old tail
                 tail.next = newNode;   // old tail looks forward to new node
                 tail = newNode;        // update tail to be the new node
-                size ++;               // increment size
-            }       
+            }
+            // increment size for every append
+            size++;
         }
     
+
+    // Add a new node at the HEAD of the linked list
+    public void prepend(int digit) {
+        Node newNode = new Node(digit);
+        if (head == null) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+        size++;
+    }
+
+    // Remove structural leading zeros (e.g., turn 0034 into 34)
+    public void removeLeadingZeros() {
+        while (head != null && head.digit == 0 && head != tail) {
+            head = head.next;
+            if (head != null) head.prev = null;
+            size--;
+        }
+    }
     @Override
     // Traverses from head to tail and builds the number string
     public String toString() {

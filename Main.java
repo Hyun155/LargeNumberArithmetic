@@ -1,5 +1,3 @@
-package com.mycompany.largenumberarithmetic;
-
 import java.util.Scanner;
 
 public class Main {
