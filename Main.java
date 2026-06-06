@@ -70,7 +70,7 @@ public class Main {
                 if (Helper.isZero(n)) {
                     System.out.println("division       = Undefined (Cannot divide by 0)");
                 } else {
-                    BigNumber divisionResult = DivisionArithmetic.divide(m, n);
+                    BigNumber divisionResult = AdvancedArithmetic.divide(m, n);
                     System.out.println("division       = " + divisionResult);
                 }
             } catch (ArithmeticException e) {
