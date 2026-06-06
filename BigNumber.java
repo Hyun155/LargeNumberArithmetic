@@ -9,9 +9,10 @@ package com.mycompany.largenumberarithmetic;
  * @author HP
  */
 public class BigNumber {
-    
     Node head;
     Node tail;
+    int size = 0;
+    boolean isNegative = false;
     
     //Constructor1 - create an empty big number 
     public BigNumber() {
@@ -32,6 +33,9 @@ public class BigNumber {
             
             //Add this digit as a new node at the tail
             append(digit);
+            
+            // Increment size
+            size++;
         }
     }
         
@@ -54,6 +58,7 @@ public class BigNumber {
                 newNode.prev = tail;   // new node looks back at old tail
                 tail.next = newNode;   // old tail looks forward to new node
                 tail = newNode;        // update tail to be the new node
+                size ++;               // increment size
             }       
         }
     
@@ -66,6 +71,9 @@ public class BigNumber {
         
         StringBuilder str = new StringBuilder();
         Node current = head;
+        
+        // if the number is negative, add negative sign
+        if (isNegative) str.append("-");
         
         // Walk from head to tail, appending each digit
         while(current != null) {
