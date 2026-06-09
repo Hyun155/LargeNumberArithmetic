@@ -56,6 +56,7 @@ public class BasicArithmetic {
               }
             }   
         }
+        sumNumber.removeLeadingZeros();
         return sumNumber;
     }
     

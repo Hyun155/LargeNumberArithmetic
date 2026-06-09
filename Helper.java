@@ -18,7 +18,30 @@ public class Helper {
     }
 
     // =====================================================
-    // 2. COMPARE FUNCTION
+    // 2. NORMALIZATION HELPERS
+    // =====================================================
+    private static Node firstSignificantDigit(BigNumber num) {
+        Node current = num.head;
+        while (current != null && current.digit == 0 && current.next != null) {
+            current = current.next;
+        }
+        return current;
+    }
+
+    private static int significantLength(BigNumber num) {
+        Node current = firstSignificantDigit(num);
+        int count = 0;
+
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+
+        return count;
+    }
+
+    // =====================================================
+    // 3. COMPARE FUNCTION
     // return 1 if a > b
     // return -1 if a < b
     // return 0 if equal
@@ -29,18 +52,18 @@ public class Helper {
         if (a.isNegative && !b.isNegative) return -1;
         if (!a.isNegative && b.isNegative) return 1;
 
-        // Both numbers have the same sign, so compare magnitudes.
-        int lenA = length(a);
-        int lenB = length(b);
+        // Both numbers have the same sign, so compare normalized magnitudes.
+        int lenA = significantLength(a);
+        int lenB = significantLength(b);
+        Node p = firstSignificantDigit(a);
+        Node q = firstSignificantDigit(b);
 
         if (!a.isNegative) {
             // Both positive: longer length means larger value.
             if (lenA > lenB) return 1;
             if (lenA < lenB) return -1;
 
-            Node p = a.head;
-            Node q = b.head;
-            while (p != null) {
+            while (p != null && q != null) {
                 if (p.digit > q.digit) return 1;
                 if (p.digit < q.digit) return -1;
                 p = p.next;
@@ -52,9 +75,7 @@ public class Helper {
             if (lenA > lenB) return -1;
             if (lenA < lenB) return 1;
 
-            Node p = a.head;
-            Node q = b.head;
-            while (p != null) {
+            while (p != null && q != null) {
                 if (p.digit > q.digit) return -1;
                 if (p.digit < q.digit) return 1;
                 p = p.next;

@@ -71,15 +71,27 @@ public class AdvancedArithmetic {
         // Keep subtracting the divisor until the remainder becomes smaller.
         while (Helper.compare(remainder, divisor) >= 0) {
 
+            BigNumber oldRemainder = Helper.copy(remainder);
             BigNumber temp =
                     BasicArithmetic.subtract(remainder, divisor);
+
+            if (Helper.compare(temp, oldRemainder) >= 0) {
+                throw new ArithmeticException(
+                        "Division did not make progress.");
+            }
 
             remainder.head = temp.head;
             remainder.tail = temp.tail;
             remainder.size = temp.size;
             remainder.isNegative = temp.isNegative;
+            remainder.decimalPosition = temp.decimalPosition;
+            remainder.removeLeadingZeros();
 
             quotientDigit++;
+            if (quotientDigit > 9) {
+                throw new ArithmeticException(
+                        "Invalid division state: quotient digit exceeded 9.");
+            }
         }
 
         return quotientDigit;
@@ -107,6 +119,8 @@ public class AdvancedArithmetic {
         boolean resultNegative = dividend.isNegative ^ divisor.isNegative;
         BigNumber a = Helper.copy(dividend); a.isNegative = false;
         BigNumber b = Helper.copy(divisor); b.isNegative = false;
+        a.removeLeadingZeros();
+        b.removeLeadingZeros();
 
         // If both values are equal, the answer is exactly 1.
         if (Helper.compare(a, b) == 0) {
@@ -156,7 +170,7 @@ public class AdvancedArithmetic {
 
         if (decimalPlaces > 0) quotient.decimalPosition = decimalPlaces;
 
-        removeLeadingZeros(quotient);
+        quotient.removeLeadingZeros();
 
         if (!Helper.isZero(quotient) && resultNegative) quotient.isNegative = true;
 
