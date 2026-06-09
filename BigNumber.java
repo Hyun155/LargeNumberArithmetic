@@ -1,8 +1,11 @@
 public class BigNumber {
+    // Doubly linked list that stores one digit per node.
     Node head;
     Node tail;
     int size = 0;
     boolean isNegative = false;
+    // Number of digits after the decimal point.
+    int decimalPosition = 0;
     
     //Constructor1 - create an empty big number 
     public BigNumber() {
@@ -14,14 +17,22 @@ public class BigNumber {
     public BigNumber(String number) {
         this.head = null;
         this.tail = null;
-        
-        // Loop through each character in the String
-        for(int i=0; i<number.length(); i++) {
-            
-            //convert char to integer
-            int digit = number.charAt(i) - '0';
-            
-            //Add this digit as a new node at the tail
+        if (number == null || number.length() == 0) return;
+
+        int start = 0;
+        // Allow an optional leading sign when reading input.
+        if (number.charAt(0) == '-') {
+            isNegative = true;
+            start = 1;
+        } else if (number.charAt(0) == '+') {
+            start = 1;
+        }
+
+        // Store each digit as its own node.
+        for (int i = start; i < number.length(); i++) {
+            char c = number.charAt(i);
+            if (c < '0' || c > '9') continue; // ignore any non-digit (simple approach)
+            int digit = c - '0';
             append(digit);
         }
     }
@@ -67,6 +78,7 @@ public class BigNumber {
 
     // Remove structural leading zeros (e.g., turn 0034 into 34)
     public void removeLeadingZeros() {
+        // Remove extra nodes at the front, but keep one zero if the number is zero.
         while (head != null && head.digit == 0 && head != tail) {
             head = head.next;
             if (head != null) head.prev = null;
@@ -77,20 +89,44 @@ public class BigNumber {
     // Traverses from head to tail and builds the number string
     public String toString() {
         
-        //if the list is empty, represent as "0"
+        // If the list is empty, represent it as zero.
         if(head == null) return "0";
         
         StringBuilder str = new StringBuilder();
         Node current = head;
         
-        // if the number is negative, add negative sign
-        if (isNegative) str.append("-");
-        
-        // Walk from head to tail, appending each digit
-        while(current != null) {
-            str.append(current.digit);
+        // Build the digit string first, then place the decimal point if needed.
+        StringBuilder digits = new StringBuilder();
+        while (current != null) {
+            digits.append(current.digit);
             current = current.next;
         }
+
+        // Add the sign before the numeric part.
+        if (isNegative) str.append("-");
+
+        if (decimalPosition <= 0) {
+            str.append(digits.toString());
+            return str.toString();
+        }
+
+        int total = digits.length();
+        if (total <= decimalPosition) {
+            // number is less than 1, need leading zero and extra zeros
+            str.append("0.");
+            for (int i = 0; i < decimalPosition - total; i++) str.append('0');
+
+            str.append(digits.toString());
+            return str.toString();
+        }
+
+        // split integer and fractional parts
+        int split = total - decimalPosition;
+        str.append(digits.substring(0, split));
+        str.append('.');
+
+        str.append(digits.substring(split));
+
         return str.toString();
     }
 }

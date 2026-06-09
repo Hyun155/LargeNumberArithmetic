@@ -4,6 +4,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         
+        // Simple console banner so the program looks organized when it starts.
         System.out.println("=========================================================");
         System.out.println("      LARGE NUMBER ARITHMETIC SYSTEM INTEGRATION HUB      ");
         System.out.println("=========================================================");
@@ -22,19 +23,19 @@ public class Main {
                 return;
             }
             
-            // Check if inputs contain non-digits (negative signs handled separate if your design requires)
-            if (!inputM.matches("\\d+") || !inputN.matches("\\d+")) {
-                System.out.println("\n[Error] Invalid input detected. Numbers must be positive integers only.");
+            // Allow only integers with an optional leading minus sign.
+            if (!inputM.matches("-?\\d+") || !inputN.matches("-?\\d+")) {
+                System.out.println("\n[Error] Invalid input detected. Numbers must be integers (optional leading -).");
                 return;
             }
 
-            // 3. Instantiate BigNumber structures using Constructor2 (String parsing)
+            // Convert the input strings into BigNumber objects.
             BigNumber m = new BigNumber(inputM);
             BigNumber n = new BigNumber(inputN);
             
-            System.out.println("\n--- Processing Full Operations ---");
+            System.out.println("\n--- Output ---");
 
-            // --- EXECUTION 1: ADDITION (Member 3) ---
+            // Run each arithmetic operation separately so one failure does not stop the others.
             try {
                 BigNumber additionResult = BasicArithmetic.add(m, n);
                 System.out.println("addition       = " + additionResult);
@@ -42,22 +43,13 @@ public class Main {
                 System.out.println("addition       = Error executing addition: " + e.getMessage());
             }
 
-            // --- EXECUTION 2: SUBTRACTION (Member 3) ---
             try {
-                // If m >= n, perform standard positive subtraction
-                if (Helper.compare(m, n) >= 0) {
-                    BigNumber subtractionResult = BasicArithmetic.subtract(m, n);
-                    System.out.println("subtraction    = " + subtractionResult);
-                } else {
-                    // If m < n, evaluate (n - m) and print a negative symbol upfront
-                    BigNumber subtractionResult = BasicArithmetic.subtract(n, m);
-                    System.out.println("subtraction    = -" + subtractionResult);
-                }
+                BigNumber subtractionResult = BasicArithmetic.subtract(m, n);
+                System.out.println("subtraction    = " + subtractionResult);
             } catch (Exception e) {
                 System.out.println("subtraction    = Error executing subtraction: " + e.getMessage());
             }
 
-            // --- EXECUTION 3: MULTIPLICATION (Member 4) ---
             try {
                 BigNumber multiplicationResult = AdvancedArithmetic.multiply(m, n);
                 System.out.println("multiplication = " + multiplicationResult);
@@ -65,7 +57,6 @@ public class Main {
                 System.out.println("multiplication = Error executing multiplication: " + e.getMessage());
             }
 
-            // --- EXECUTION 4: DIVISION (Member 5) ---
             try {
                 if (Helper.isZero(n)) {
                     System.out.println("division       = Undefined (Cannot divide by 0)");

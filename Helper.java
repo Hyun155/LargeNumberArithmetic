@@ -25,27 +25,43 @@ public class Helper {
     // =====================================================
     public static int compare(BigNumber a, BigNumber b) {
 
-        // Step 1: compare length first
+        // Handle sign differences first.
+        if (a.isNegative && !b.isNegative) return -1;
+        if (!a.isNegative && b.isNegative) return 1;
+
+        // Both numbers have the same sign, so compare magnitudes.
         int lenA = length(a);
         int lenB = length(b);
 
-        if (lenA > lenB) return 1;
-        if (lenA < lenB) return -1;
+        if (!a.isNegative) {
+            // Both positive: longer length means larger value.
+            if (lenA > lenB) return 1;
+            if (lenA < lenB) return -1;
 
-        // Step 2: same length → compare digit by digit
-        Node p = a.head;
-        Node q = b.head;
+            Node p = a.head;
+            Node q = b.head;
+            while (p != null) {
+                if (p.digit > q.digit) return 1;
+                if (p.digit < q.digit) return -1;
+                p = p.next;
+                q = q.next;
+            }
+            return 0;
+        } else {
+            // Both negative: larger magnitude means smaller value.
+            if (lenA > lenB) return -1;
+            if (lenA < lenB) return 1;
 
-        while (p != null) {
-
-            if (p.digit > q.digit) return 1;
-            if (p.digit < q.digit) return -1;
-
-            p = p.next;
-            q = q.next;
+            Node p = a.head;
+            Node q = b.head;
+            while (p != null) {
+                if (p.digit > q.digit) return -1;
+                if (p.digit < q.digit) return 1;
+                p = p.next;
+                q = q.next;
+            }
+            return 0;
         }
-
-        return 0;
     }
 
     // =====================================================
@@ -54,6 +70,7 @@ public class Helper {
     // =====================================================
     public static boolean isZero(BigNumber num) {
 
+        // A number is zero only when every digit is zero.
         Node current = num.head;
 
         while (current != null) {
@@ -74,6 +91,7 @@ public class Helper {
     // =====================================================
     public static BigNumber copy(BigNumber original) {
 
+        // Create a new list with the same digits and metadata.
         BigNumber newNum = new BigNumber();
 
         Node current = original.head;
@@ -84,6 +102,9 @@ public class Helper {
 
             current = current.next;
         }
+
+        newNum.isNegative = original.isNegative;
+        newNum.decimalPosition = original.decimalPosition;
 
         return newNum;
     }
