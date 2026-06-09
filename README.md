@@ -39,7 +39,6 @@ LargeNumberArithmetic/
 ├── AdvancedArithmetic.java
 ├── Main.java
 ├── README.md
-└── .gitignore
 ```
 
 ## How To Run
