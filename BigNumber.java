@@ -11,12 +11,14 @@ public class BigNumber {
     public BigNumber() {
         this.head =null;
         this.tail =null;
+        this.size = 0;
     }
     
     //Constructor2 - Create a BigNumber from a String
     public BigNumber(String number) {
         this.head = null;
         this.tail = null;
+        this.size = 0;
         if (number == null || number.length() == 0) return;
 
         int start = 0;

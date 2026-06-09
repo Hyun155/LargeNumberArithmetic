@@ -179,6 +179,8 @@ public class AdvancedArithmetic {
             if (num.head != null) {
                 num.head.prev = null;
             }
+
+            num.size--;
         }
     }
 

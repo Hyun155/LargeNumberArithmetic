@@ -117,6 +117,7 @@ public class BasicArithmetic {
             subtractNumber.head = subcurrent.next;
             subtractNumber.head.prev = null;
             subcurrent = subcurrent.next;
+            subtractNumber.size--;
         }
 
         return subtractNumber;
