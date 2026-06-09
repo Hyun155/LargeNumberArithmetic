@@ -109,28 +109,4 @@ public class Helper {
         return newNum;
     }
 
-    // =====================================================
-    // 5. REVERSE FUNCTION
-    // Reverse the doubly linked list in-place
-    // =====================================================
-    public static void reverse(BigNumber num) {
-
-        Node current = num.head;
-        Node temp = null;
-
-        while (current != null) {
-
-            // swap prev and next
-            temp = current.prev;
-            current.prev = current.next;
-            current.next = temp;
-
-            current = current.prev;
-        }
-
-        // swap head and tail
-        temp = num.head;
-        num.head = num.tail;
-        num.tail = temp;
-    }
 }
