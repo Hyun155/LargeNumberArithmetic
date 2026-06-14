@@ -13,7 +13,7 @@ public class AdvancedArithmetic {
         // Result sign is negative only when exactly one input is negative.
         boolean resultNegative = a.isNegative ^ b.isNegative;
 
-        // Work with absolute values so the digit math stays simple.
+        // Convert both numbers into their absolute values so that the digit-by-digit calculation is simplified.
         BigNumber aa = Helper.copy(a); aa.isNegative = false;
         BigNumber bb = Helper.copy(b); bb.isNegative = false;
 
@@ -21,12 +21,14 @@ public class AdvancedArithmetic {
         Node currB = bb.tail;
         int shiftCount = 0;
 
+        // Outer loop - process each digit of multiplier (second number)
         while (currB != null) {
 
             BigNumber partialResult = new BigNumber();
             Node currA = aa.tail;
             int carry = 0;
 
+            // Inner loop - multiply each digit of the first number with the current digit of the second number
             while (currA != null || carry > 0) {
 
                 int valA = (currA != null) ? currA.digit : 0;
@@ -37,11 +39,12 @@ public class AdvancedArithmetic {
 
                 partialResult.prepend(product % 10);
 
+                // move to the next digit in a
                 if (currA != null) {
                     currA = currA.prev;
                 }
             }
-
+            // Apply positional shifts by appending zeros based on the current digit place.
             for (int i = 0; i < shiftCount; i++) {
                 partialResult.append(0);
             }
@@ -54,6 +57,7 @@ public class AdvancedArithmetic {
 
         finalResult.removeLeadingZeros();
 
+        // Apply the sign, but only if the result is not zero.
         if (!Helper.isZero(finalResult) && resultNegative) finalResult.isNegative = true;
 
         return finalResult;
@@ -68,18 +72,21 @@ public class AdvancedArithmetic {
 
         int quotientDigit = 0;
 
-        // Keep subtracting the divisor until the remainder becomes smaller.
+        // Keep subtracting the divisor until the remainder becomes smaller than the divisor.
         while (Helper.compare(remainder, divisor) >= 0) {
 
+            // save current remainder for safety check to prevent infinite loops
             BigNumber oldRemainder = Helper.copy(remainder);
             BigNumber temp =
                     BasicArithmetic.subtract(remainder, divisor);
 
+            // we compare values to ensure progress is being made
             if (Helper.compare(temp, oldRemainder) >= 0) {
                 throw new ArithmeticException(
                         "Division did not make progress.");
             }
 
+            // Java passes object references by value. We need to copy the temp result back into the remainder object.
             remainder.head = temp.head;
             remainder.tail = temp.tail;
             remainder.size = temp.size;
@@ -87,7 +94,9 @@ public class AdvancedArithmetic {
             remainder.decimalPosition = temp.decimalPosition;
             remainder.removeLeadingZeros();
 
+            // Each successful subtraction represents one increment in the quotient digit.
             quotientDigit++;
+            // ensure that each quotient digit does not exceed 9
             if (quotientDigit > 9) {
                 throw new ArithmeticException(
                         "Invalid division state: quotient digit exceeded 9.");
