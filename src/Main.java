@@ -72,7 +72,6 @@ public class Main {
 
         } catch (Exception e) {
             System.out.println("\n[System Runtime Error] An unexpected error occurred: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             scanner.close();
             System.out.println("=========================================================");
