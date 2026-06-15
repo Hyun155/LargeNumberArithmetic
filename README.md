@@ -32,13 +32,17 @@ LargeNumberArithmetic is a simple Java project for doing arithmetic with numbers
 
 ```text
 LargeNumberArithmetic/
-├── Node.java
-├── Helper.java
-├── BigNumber.java
-├── BasicArithmetic.java
-├── AdvancedArithmetic.java
-├── Main.java
+├── src/
+│   ├── Node.java
+│   ├── Helper.java
+│   ├── BigNumber.java
+│   ├── BasicArithmetic.java
+│   ├── AdvancedArithmetic.java
+│   ├── Main.java
+│
+├── bin/
 ├── README.md
+├── .gitignore
 ```
 
 ## How To Run
@@ -46,14 +50,12 @@ LargeNumberArithmetic/
 Compile the project:
 
 ```bash
-javac *.java
-```
+javac -d bin src/*.java```
 
 Run the program:
 
 ```bash
-java Main
-```
+java -cp bin Main```
 
 Then enter two integers when prompted, for example:
 
