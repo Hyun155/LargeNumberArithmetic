@@ -50,12 +50,14 @@ LargeNumberArithmetic/
 Compile the project:
 
 ```bash
-javac -d bin src/*.java```
+javac -d bin src/*.java
+```
 
 Run the program:
 
 ```bash
-java -cp bin Main```
+java -cp bin Main
+```
 
 Then enter two integers when prompted, for example:
 
