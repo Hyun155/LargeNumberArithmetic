@@ -40,6 +40,25 @@ public class Helper {
         return count;
     }
 
+    private static int compareMagnitude(BigNumber a, BigNumber b) {
+        int lenA = significantLength(a);
+        int lenB = significantLength(b);
+        Node p = firstSignificantDigit(a);
+        Node q = firstSignificantDigit(b);
+
+        if (lenA > lenB) return 1;
+        if (lenA < lenB) return -1;
+
+        while (p != null && q != null) {
+            if (p.digit > q.digit) return 1;
+            if (p.digit < q.digit) return -1;
+            p = p.next;
+            q = q.next;
+        }
+
+        return 0;
+    }
+
     // =====================================================
     // 3. COMPARE FUNCTION
     // return 1 if a > b
@@ -52,37 +71,15 @@ public class Helper {
         if (a.isNegative && !b.isNegative) return -1;
         if (!a.isNegative && b.isNegative) return 1;
 
-        // Both numbers have the same sign, so compare normalized magnitudes.
-        int lenA = significantLength(a);
-        int lenB = significantLength(b);
-        Node p = firstSignificantDigit(a);
-        Node q = firstSignificantDigit(b);
+        // Both numbers have the same sign.
+        int magnitudeComparison = compareMagnitude(a, b);
 
         if (!a.isNegative) {
-            // Both positive: longer length means larger value.
-            if (lenA > lenB) return 1;
-            if (lenA < lenB) return -1;
-
-            while (p != null && q != null) {
-                if (p.digit > q.digit) return 1;
-                if (p.digit < q.digit) return -1;
-                p = p.next;
-                q = q.next;
-            }
-            return 0;
-        } else {
-            // Both negative: larger magnitude means smaller value.
-            if (lenA > lenB) return -1;
-            if (lenA < lenB) return 1;
-
-            while (p != null && q != null) {
-                if (p.digit > q.digit) return -1;
-                if (p.digit < q.digit) return 1;
-                p = p.next;
-                q = q.next;
-            }
-            return 0;
+            return magnitudeComparison;
         }
+
+        // Both negative: larger magnitude means smaller value.
+        return -magnitudeComparison;
     }
 
     // =====================================================
